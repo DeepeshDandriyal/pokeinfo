@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Search from "../components/Search";
 import { addItem } from "../store/PokemonSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -12,7 +13,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://pokeapi.co/api/v2/pokemon/?limit=100")
+      .get("https://pokeapi.co/api/v2/pokemon/?limit=50")
       .then((res) => {
         setPokemons(res.data.results);
         setFilteredPokemons(res.data.results);
@@ -21,7 +22,7 @@ const Home = () => {
   }, []);
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   return (
     <div className="home-container">
       <Search pokemons={pokemons} setFilteredPokemons={setFilteredPokemons} />
@@ -31,7 +32,7 @@ const Home = () => {
             index + 1
           }.svg`;
           return (
-            <div className="card">
+            <div className="card" onClick={() => navigate(`/${pokemon.name}`)}>
               <img src={IMG_URL} height="80px" width="80px" alt="" />
               <h1 key={pokemon.name}>{pokemon.name}</h1>
               <Button
