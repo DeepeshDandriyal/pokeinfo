@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Search from "../components/Search";
+import { addItem } from "../store/PokemonSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -18,6 +20,8 @@ const Home = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  const dispatch = useDispatch();
+
   return (
     <div className="home-container">
       <Search pokemons={pokemons} setFilteredPokemons={setFilteredPokemons} />
@@ -30,7 +34,13 @@ const Home = () => {
             <div className="card">
               <img src={IMG_URL} height="80px" width="80px" alt="" />
               <h1 key={pokemon.name}>{pokemon.name}</h1>
-              <Button variant="contained" color="success">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  dispatch(addItem(pokemon));
+                }}
+              >
                 Add
               </Button>
             </div>
